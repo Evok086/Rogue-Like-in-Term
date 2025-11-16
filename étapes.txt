@@ -1,0 +1,25 @@
+1ere étape
+- Se mettre d'accord sur ce qu'on doit faire
+- afficher le fichier texte
+- faine un petite grille pour comprendre
+- changer les valeurs du fichier tetxe pour un mouvement
+- gestion des combats contre un Monstre
+
+2eme étopes :
+- gestion des portes
+- gestion des condition de succes
+- gestion de 2 ia de monstres
+- equipement
+
+3eme étape
+- brouillard de guerre
+- Faire de la couleur
+- inventaire
+- des ia encore plus différentes
+- pourquoi pas des potions
+
+4eme etape
+- dejà si on arrive jusqu'a la on est trop fort, et on vera ensuite quoi faire
+-faire unr carte proceduralement générée pour taper 25/20
+- Systeme de combat développé
+- Systeme de clesses

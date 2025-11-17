@@ -1,0 +1,29 @@
+Exemples de noms de caractéristiques
+
+Vision, Vie, Niveau, Force, Dommages, Ruse
+Vision, Faim, Bonheur, Repos, Sociabilité, Curiosité
+Vision, Santé Mentale, Bureaucratie, Colère, Résignation, Satisfaction 
+
+
+(Le format ci-dessous n'est vraisemblablement pas adapté pour vos fichiers, faites au plus simple ) 
+Exemple d'équipement
+
+1 "Epée" [0, 0, 1, 5, 10, 0] 
+12 "Laisser-passer A28" [0, -10, 10, -5, -15, -10]
+14 "Bananes" [0, -10, 0,0,0,0]
+21 "Blessure" [0, -10, 0, -5, -2, 0]
+24 "Clé rouge"  [0,0,0,0,0,0] 
+
+
+(Le format ci-dessous n'est vraisemblablement pas adapté pour vos fichiers, faites au plus simple ) 
+Exemples de contrainte (descr, carac, equip_obligatoire, equip_interdit )
+
+"Victoire par niveau" sup [0,0,10,0,0,0]  [][] 
+"Porte rouge" sup [0,0,0,0,0,0]  [24] []
+"Victoire administrative" sup [0,0,0,0,0,0]  [12] [21]
+"Defaite" inf [0,0,0,-100,-100,0]  [] []
+
+
+Les joueurs et les monstres sont plus complexes :
+- comment représenter leur liste d'équipement (sachant qu'ils peuvent posséder plusieurs équipements du même type)
+

@@ -1,7 +1,7 @@
 # Rogue-Like-in-Term
 Rogue-Like game in termial
 
-Step 1
+Step 1 Skeleton
 
 Basic objectives:
 	- Agree on what we need to do
@@ -10,7 +10,7 @@ Basic objectives:
 	- Change the text file values to enable movement
 	- Manage combat against a monster
 
-Step 2
+Step 2 Muscles
 
 Beginning of more complete gameplay:
 	- Door management
@@ -18,7 +18,7 @@ Beginning of more complete gameplay:
 	- Management of 2 monster AIs
 	- Equipment
 
-Step 3
+Step 3 Skin 
 
 Improvements and depth:
 	- Fog of war
@@ -27,7 +27,7 @@ Improvements and depth:
 	- More diverse AIs
 	- Maybe add potions
 
-Step 4
+Step 4 Clothes
 
 Advanced goals / if we are too strong 😄:
 	- If we reach this point, we're already too strong, then we'll see what to do next!

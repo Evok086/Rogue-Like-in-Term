@@ -1,5 +1,0 @@
-Systeme de gain d'XP
-procedure gain_XP(perso& Perso, monstre& Monstre)
-début
-	perso.XP = perso.XP + monstre.XP
-fin

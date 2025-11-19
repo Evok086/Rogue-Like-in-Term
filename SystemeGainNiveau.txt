@@ -1,8 +1,0 @@
-Systeme de gain de niveau
-procedure gain_niveau(perso& Perso)
-début
-	si perso.XP/perso.niveau > 0,2 alors
-		perso.niveau += 1
-		(inventaire + cadeaux[iCadeaux])
-	fin si
-fin

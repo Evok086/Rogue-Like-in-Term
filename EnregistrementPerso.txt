@@ -1,8 +1,0 @@
-Enregistrement Perso
-type Enregistrement Perso():
-	- vie : int
-	- position : tableau de 2 ints
-	- XP : int
-	- niveau : int
-	- degats : int
-fin

@@ -15,9 +15,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8d294339-045b-4a0e-bc80-eecdbff6c9e5" name="Changes" comment="retest Clion">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="8d294339-045b-4a0e-bc80-eecdbff6c9e5" name="Changes" comment="retest Clion" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -86,7 +84,7 @@
       <workItem from="1763329786831" duration="27000" />
       <workItem from="1763566174161" duration="577000" />
       <workItem from="1763566765093" duration="906000" />
-      <workItem from="1763643021074" duration="611000" />
+      <workItem from="1763643021074" duration="954000" />
     </task>
     <task id="LOCAL-00001" summary="test Clion">
       <option name="closed" value="true" />

@@ -28,6 +28,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8d294339-045b-4a0e-bc80-eecdbff6c9e5" name="Changes" comment="nope">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jeu/mainV0.2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jeu/mainV0.2.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,9 +73,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "CMake Application.Rogue_Like_in_Term.executor": "Debug",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.RadMigrateCodeStyle": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
@@ -90,6 +93,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.general",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   }
@@ -118,7 +122,7 @@
       <workItem from="1763566174161" duration="577000" />
       <workItem from="1763566765093" duration="906000" />
       <workItem from="1763643021074" duration="2784000" />
-      <workItem from="1763973659516" duration="3150000" />
+      <workItem from="1763973659516" duration="4509000" />
     </task>
     <task id="LOCAL-00001" summary="test Clion">
       <option name="closed" value="true" />
@@ -144,16 +148,33 @@
       <option name="project" value="LOCAL" />
       <updated>1764076151275</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="nope">
+      <option name="closed" value="true" />
+      <created>1764076524765</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1764076524765</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VCPKGProject">
+    <isAutomaticCheckingOnLaunch value="false" />
+    <isAutomaticFoundErrors value="true" />
+    <isAutomaticReloadCMake value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="test Clion" />
     <MESSAGE value="retest Clion" />
     <MESSAGE value="nope" />
     <option name="LAST_COMMIT_MESSAGE" value="nope" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

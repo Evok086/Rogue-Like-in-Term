@@ -7,7 +7,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include "lib_projet_ncurses.hpp"
+#include "../librairie.hpp"
 
 using namespace std;
 
@@ -96,7 +96,7 @@ int main() {
     }
 
     //variable utilisé 
-    string nom_fichier = "maptest.txt";
+    string nom_fichier = "Carte.txt";
     int input = 0; // Stocke la touche appuyée
 
     //affiche le menu de base

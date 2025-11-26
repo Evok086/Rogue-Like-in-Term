@@ -1,0 +1,89 @@
+Rôle : déplacer le personnage en fonction de ce qu'il y a a coté de lui
+Entrée : Enregistrement Personnage m
+Sortie : Pas de sortie 
+Précondition : Aucune 
+Condition de fin : l'utilisateur n'appuie pas sur (X) 
+
+
+
+
+Fonction Deplacement (Enregistrement : Perso m)
+	Tant que input(!=X):
+		c = carte[x,y]
+		Input = saisie_bloquante () //on attend une réponse 
+		V = False
+		if (input == z):
+			V = Verif(personnages) <- carte[x+1],[y]
+			if (v == True): 
+				Personnage.position.x += 1
+				fin if
+		else if (input == q):
+			V= Verif(personnages)<- carte[x,y+1]
+			if (V == True):
+				personnage.position.y = y-1
+				fin if
+		else if (input == d):
+			V= Verif(personnages)<- carte[x,y+1]
+			if (V == True):
+				personnage.position.y = y+1
+				fin if
+		else if (input == s):
+			V= Verif(personnages)<- carte[x-1, y]
+			if (V == True):
+				personnage.position.y = y-1
+				fin if
+		fin if 
+	fin tant que 
+fin 
+
+Fonction Verif (perosnnage m) carte
+	c= carte.[x,y]
+	if (c[x+position(x), y+position(y)] == # : //si mur ou si le perso est en dehors de la carte alors
+		return false
+	if (c [x+ position(x), y+ position(y)] == M : //si le personnage rencontre un monstre
+		combat (personnages, monstre) 
+		return true
+	if (c [x+ position(x), y+ position(y)] == E : //si le personnage tombe sur une case equipement
+		prendre objet(personnage)
+		return true
+
+
+Système de mouvement :
+On peut aller en haut, en bas, à gauche et à droite. Quand on clique sur une touche on lance une fonction qui vérifie, dans un premier temps, si la position du joueur permet de faire le mouvement que l'utilisateur désire.
+
+Fichier txt Equipement :
+	v = potion de vie  : 15PV
+	x = potion d'Exp : 20 XP
+	E : Epee : 2 attaques 
+	B : Bouclier 2 armures 
+	K : cle
+	D : Potion de degats : 2 attaques 
+
+Sous-algo pour les combats : 
+	Sousalgo Combat(Perso.vie, Monstre.vie):
+		tant que Perso.vie > 0 ET Monstre.vie > 0 :
+			Si Perso.vie <= 10 : 
+				Ecrire "Attention a vos Points de vie"
+			Sinon : 
+				Ecrire "Choisissez une option : ", "A ou D"
+				Lire rep_option
+				Si rep_option == "A": 
+					Monstre.vie = Monstre.vie - Perso.degats
+				Sinon: 
+					Si rep_option == "D":
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

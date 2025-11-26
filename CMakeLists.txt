@@ -7,7 +7,8 @@ include_directories(.)
 
 add_executable(Rogue_Like_in_Term
         Jeu/mainV0.2.cpp
-        librairie.hpp
+        Jeu/librairie.hpp
+        Jeu/Carte.txt
 )
 find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIR})

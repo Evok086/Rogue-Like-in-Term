@@ -7,13 +7,19 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include "../librairie.hpp"
+#include "librairie.hpp"
 
 using namespace std;
 
 struct Personnage{
     string Nom;
-    int Vie,Degat,Niveau,xp,Vision,Armure;
+    int Vie,Degat,Niveau,xp,Vision,Armure,x,y;
+};
+
+struct Carte{
+    char carte[100][100];
+    int y;
+    int x;
 };
 
 
@@ -43,6 +49,59 @@ const PaireCouleur couleurs[] = {
 
 // ----- Fonctions Utilitaires -----
 
+bool Verif(Personnage& perso, Carte& carte, int x, int y) {
+    if ((carte.carte[x,y] == "#") or (x < carte.x) or (y < carte.y)) {
+        //si mur ou si le perso est en dehors de la carte alors
+        return false;
+    }
+    if (carte.carte[x,y] == "T" or carte.carte[x,y] == "D") {
+        //si le personnage rencontre un monstre
+        combat(perso, carte.carte[x,y]);
+        return true;
+    }
+    if (carte.carte[x,y] == "E") {
+        //si le personnage tombe sur une case equipement
+        prendre_objet(perso);
+        return true;
+    }
+}
+
+void Deplacement(Personnage& perso, Carte carte) {
+    string input;
+    bool V;
+    input = saisie_bloquante(); //on attend une réponse
+    V = False;
+    if (input == "z") {
+        V = Verif(perso, perso.x+1, perso.y);
+        if (V == True) {
+            perso.x += 1;
+        }
+    }
+    else {
+        if (input == "q") {
+            V= Verif(perso)<- carte[x,y+1];
+        }
+        if (V == True) {
+            perso.y = y-1;
+        }
+    }
+    else {
+        if (input == "d") {
+            V= Verif(perso)<- carte[x,y+1];
+        }
+        if (V == True) {
+            perso.y += 1;
+        }
+    else {
+        if (input == "s") {
+            V= Verif(perso)<- carte[x-1, y];
+        }
+        if (V == True) {
+            perso.y -= 1;
+        }
+    }
+}
+
 // Fonction pour lire le fichier carte
 int lire_carte(string nom_fic) {
     fstream flux;
@@ -50,7 +109,7 @@ int lire_carte(string nom_fic) {
 
     if (flux.is_open()) {
         ecrire_string("Succes : La carte est ouverte.", 0, 6);
-        flux.close(); 
+        flux.close();
         return 1;     
     } else {
         ecrire_string("Erreur : Impossible d'ouvrir la carte.", 0, 6);
@@ -58,21 +117,29 @@ int lire_carte(string nom_fic) {
     }
 }
 
-void DessinerMap(int MaxX, int MaxY, string nom_fichier){
-    int x = 0;
-    while (x<MaxX){
-        cout << x;
-        x = x+1;
-    } 
+void DessinerMap(string nom_fichier) {
+    fstream flux(nom_fichier, ios::in);
+    if (!flux.is_open()) return;
 
+    string ligne;
+    int y = 0; // position verticale
+    while (getline(flux, ligne)) {
+        for (int x = 0; x < ligne.size(); x++) {
+            ecrire_char(x, y, ligne[x]); // afficher chaque caractère à sa position
+        }
+        y++;
+    }
 
+    flux.close();
 }
 
 
+
 // Fonction pour dessiner une ligne horizontale
-void dessiner_ligne(int longueur, int y, char chr) {
+void dessiner_ligne(int longueur, int y, char chr, Carte &carte) {
     for (int x = 0; x < longueur; x++) {
         ecrire_char(x, y, chr);
+        carte.carte[x][y] = chr;
     }
 }
 
@@ -108,17 +175,17 @@ int main() {
         // On attend une touche utilisateur
         input = saisie_bloquante();
 
-        // on efface et on reécrit a chaque fois pour ne pas se perdre
+        // on efface et on réécrit à chaque fois pour ne pas se perdre
         effacer_console();
-        
+
         if (input == 'p') { 
             // Lancement du jeu
-            ecrire_string("Partie lancé", 0, 5);
+            ecrire_string("Partie lancée", 0, 5);
             lire_carte(nom_fichier);
-            DessinerMap(8,10,nom_fichier);
+            DessinerMap(    nom_fichier);
         } 
         else {
-            //sinon on réaffiche comme a chaque fois
+            //sinon on réaffiche comme à chaque fois
             afficher_instructions();
         }
     }

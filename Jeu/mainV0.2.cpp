@@ -56,12 +56,12 @@ bool Verif(Personnage& perso, Carte& carte, int x, int y) {
     }
     if (carte.carte[x,y] == "T" or carte.carte[x,y] == "D") {
         //si le personnage rencontre un monstre
-        combat(perso, carte.carte[x,y]);
+        //combat(perso, carte.carte[x,y]);
         return true;
     }
     if (carte.carte[x,y] == "E") {
         //si le personnage tombe sur une case equipement
-        prendre_objet(perso);
+        //prendre_objet(perso);
         return true;
     }
 }
@@ -72,38 +72,38 @@ void Deplacement(Personnage& perso, Carte carte) {
     input = saisie_bloquante(); //on attend une réponse
     V = False;
     if (input == "z") {
-        V = Verif(perso, perso.x+1, perso.y);
+        V = Verif(perso,carte, perso.x+1, perso.y);
         if (V == True) {
             perso.x += 1;
         }
     }
     else {
         if (input == "q") {
-            V= Verif(perso)<- carte[x,y+1];
+            V= Verif(perso,carte, perso.x, perso.y-1);
         }
         if (V == True) {
-            perso.y = y-1;
+            perso.y -= 1;
         }
     }
     else {
         if (input == "d") {
-            V= Verif(perso)<- carte[x,y+1];
+            V= Verif(perso,carte, perso.x, perso.y+1);
         }
         if (V == True) {
             perso.y += 1;
         }
     else {
         if (input == "s") {
-            V= Verif(perso)<- carte[x-1, y];
+            V= Verif(perso,carte, perso.x-1, perso.y)<- carte[x-1, y];
         }
         if (V == True) {
-            perso.y -= 1;
+            perso.x -= 1;
         }
     }
 }
 
 // Fonction pour lire le fichier carte
-int lire_carte(string nom_fic) {
+int lire_carte(string nom_fic){
     fstream flux;
     flux.open(nom_fic, ios::in);
 

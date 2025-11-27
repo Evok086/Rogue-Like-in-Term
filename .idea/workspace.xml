@@ -29,9 +29,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8d294339-045b-4a0e-bc80-eecdbff6c9e5" name="Changes" comment="nope">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.~lock.Projet.odt#" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Jeu/mainV0.2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jeu/mainV0.2.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/librairie.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jeu/librairie.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +128,8 @@
       <workItem from="1763566765093" duration="906000" />
       <workItem from="1763643021074" duration="2784000" />
       <workItem from="1763973659516" duration="7043000" />
-      <workItem from="1764145905384" duration="4798000" />
+      <workItem from="1764145905384" duration="4914000" />
+      <workItem from="1764248318346" duration="355000" />
     </task>
     <task id="LOCAL-00001" summary="test Clion">
       <option name="closed" value="true" />

@@ -19,6 +19,8 @@ struct Personnage {
     string Nom;
     int x, y; 
     int Vie, Degat, Niveau, xp, Vision, Armure;
+    // Indique si le joueur possède une clé
+    bool aCle = false;
 };
 
 struct Monstre {
@@ -53,7 +55,22 @@ const PaireCouleur couleurs[] = {
 
 // Fonction qui verifie SI ET SEULEMENT SIIIII on a le droit d'aller sur la case (x,y)
 // Elle renvoie TRUE si c'est bon, FALSE si c'est un mur ou hors map (logique lol)
-bool test_collision(int x, int y, const Carte &c) {
+// Sous-algorithme: vérifie si le joueur a une clé et ouvre les portes (remplace 'O' par '.') si oui
+// Retourne true si des portes ont été ouvertes (ou si le joueur avait la clé), false sinon
+bool verifier_et_ouvrir_portes(Personnage &p, Carte &c) {
+    if (!p.aCle) return false;
+    for (int yy = 0; yy < c.yMax; yy++) {
+        for (int xx = 0; xx < c.xMax; xx++) {
+            if (c.carte[yy][xx] == 'O') {
+                c.carte[yy][xx] = '.';
+            }
+        }
+    }
+    p.aCle = false;
+    return true;
+}
+
+bool test_collision(int x, int y, Personnage &p, Carte &c) {
     
     // n verifie qu'on sort pas du tableau (au cas ouu)
     if (x < 0 || y < 0 || y >= c.yMax || x >= c.xMax) {
@@ -65,7 +82,22 @@ bool test_collision(int x, int y, const Carte &c) {
         return false; // C'est un mur, interdit(logique ma gueule !)
     }
 
-    // Les interactions spéciales (portes, sorties, etc.) seront gérées ailleurs
+    // Gestion des clés et portes
+    if (c.carte[y][x] == 'k') {
+        // On ramasse la clé, on remplace par un sol
+        p.aCle = true;
+        return true;
+    }
+    if (c.carte[y][x] == 'O') {
+        // On tente d'ouvrir les portes via le sous-algorithme
+        if (verifier_et_ouvrir_portes(p, c)) {
+            // Après ouverture, la case ciblée est désormais un sol, on autorise le déplacement
+            return true;
+        } else {
+            // Pas de clé: déplacement interdit
+            return false;
+        }
+    }
 
     // Si on arrive ici, c'est que la voie est libre(en mode splinter cell)
     return true;
@@ -73,7 +105,7 @@ bool test_collision(int x, int y, const Carte &c) {
 
 // Fonction qui calcule le mouvement et déplace le héros si possible
 // IMPORTANT : On met "Personnage &p" avec un & pour modifier le vrai héros parce que sinon azy ça marche pas (j'y ai passé 30 minutes ...ahah)
-void gerer_deplacement(Personnage &p, int input, const Carte &c) {
+void gerer_deplacement(Personnage &p, int input, Carte &c) {
     
     int futurX = p.x; //on modifie la pos x 
     int futurY = p.y; // idem avec y et j'appelle ca futur parce que POURQUOI PAS 
@@ -86,7 +118,7 @@ void gerer_deplacement(Personnage &p, int input, const Carte &c) {
     else return; // Si c'est une autre touche, on fait rien
 
     // On demande à la fonction de verif si on peut y aller
-    if (test_collision(futurX, futurY, c) == true) {
+    if (test_collision(futurX, futurY, p, c) == true) {
         // C'est validé, on met à jour le joueur
         p.x = futurX;
         p.y = futurY;
@@ -228,6 +260,7 @@ int main() {
     heros.x = 2; // Position de départ X
     heros.y = 2; // Position de départ Y
     heros.Nom = "Aventurier"; // on lui donne un nom (pas sur de l'idée on s'en fou je pense pour l'instant mais azy il est 23 heures j'en peu plus)
+    heros.aCle = false; // le héros ne possède pas de clé au départ
 
     int input = 0; // en gros a la place d'utiliser saisie bloquante je fais ça pour garder ce qu'on appuie
 

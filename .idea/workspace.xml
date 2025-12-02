@@ -27,7 +27,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8d294339-045b-4a0e-bc80-eecdbff6c9e5" name="Changes" comment="VO3 avec perdu et combat" />
+    <list default="true" id="8d294339-045b-4a0e-bc80-eecdbff6c9e5" name="Changes" comment="VO3 avec perdu et combat">
+      <change beforePath="$PROJECT_DIR$/Jeu/mainV03.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jeu/mainV03.cpp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -127,7 +129,7 @@
       <workItem from="1764145905384" duration="4914000" />
       <workItem from="1764248318346" duration="4034000" />
       <workItem from="1764353844937" duration="2292000" />
-      <workItem from="1764669690889" duration="3591000" />
+      <workItem from="1764669690889" duration="4451000" />
     </task>
     <task id="LOCAL-00001" summary="test Clion">
       <option name="closed" value="true" />

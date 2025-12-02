@@ -27,14 +27,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8d294339-045b-4a0e-bc80-eecdbff6c9e5" name="Changes" comment="nope">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jeu/librairie.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jeu/main.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Jeu/main.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jeu/mainV0.2.cpp" beforeDir="false" />
-    </list>
+    <list default="true" id="8d294339-045b-4a0e-bc80-eecdbff6c9e5" name="Changes" comment="VO3 avec perdu et combat" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -134,7 +127,7 @@
       <workItem from="1764145905384" duration="4914000" />
       <workItem from="1764248318346" duration="4034000" />
       <workItem from="1764353844937" duration="2292000" />
-      <workItem from="1764669690889" duration="2718000" />
+      <workItem from="1764669690889" duration="3591000" />
     </task>
     <task id="LOCAL-00001" summary="test Clion">
       <option name="closed" value="true" />
@@ -168,7 +161,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764076524765</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="VO3 avec perdu et combat">
+      <option name="closed" value="true" />
+      <created>1764673421969</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764673421969</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -183,7 +184,8 @@
     <MESSAGE value="test Clion" />
     <MESSAGE value="retest Clion" />
     <MESSAGE value="nope" />
-    <option name="LAST_COMMIT_MESSAGE" value="nope" />
+    <MESSAGE value="VO3 avec perdu et combat" />
+    <option name="LAST_COMMIT_MESSAGE" value="VO3 avec perdu et combat" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

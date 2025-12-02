@@ -6,6 +6,8 @@
   <component name="BackendCodeEditorMiscSettings">
     <option name="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue" value="22" type="long" />
     <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
+    <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
   </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
@@ -17,9 +19,7 @@
     <option name="reloaded" value="true" />
   </component>
   <component name="CMakeRunConfigurationManager">
-    <generated>
-      <config projectName="Rogue_Like_in_Term" targetName="Rogue_Like_in_Term" />
-    </generated>
+    <generated />
   </component>
   <component name="CMakeSettings">
     <configurations>
@@ -28,9 +28,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8d294339-045b-4a0e-bc80-eecdbff6c9e5" name="Changes" comment="nope">
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.~lock.Projet.odt#" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Jeu/mainV0.2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Jeu/mainV0.2.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jeu/librairie.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jeu/main.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Jeu/main.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jeu/mainV0.2.cpp" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +98,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.inline.completion&quot;,
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -109,9 +112,9 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="Rogue_Like_in_Term" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Rogue_Like_in_Term" TARGET_NAME="Rogue_Like_in_Term" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Rogue_Like_in_Term" RUN_TARGET_NAME="Rogue_Like_in_Term">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
   </component>
@@ -129,7 +132,9 @@
       <workItem from="1763643021074" duration="2784000" />
       <workItem from="1763973659516" duration="7043000" />
       <workItem from="1764145905384" duration="4914000" />
-      <workItem from="1764248318346" duration="355000" />
+      <workItem from="1764248318346" duration="4034000" />
+      <workItem from="1764353844937" duration="2292000" />
+      <workItem from="1764669690889" duration="2718000" />
     </task>
     <task id="LOCAL-00001" summary="test Clion">
       <option name="closed" value="true" />

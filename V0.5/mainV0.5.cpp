@@ -253,6 +253,13 @@ bool test_collision(int x, int y, char carte[MAX_LIGNES][MAX_COLONNES], Personna
         return true;
     }
     
+    // Interaction : Sortie de niveau / Fin de partie
+    // Si le joueur marche sur 'H', on termine immédiatement la partie
+    if (carte[y][x] == 'H'){
+        jeu_lance = false; // Retour au menu principal
+        return true;       // Autorise le déplacement final sur la case
+    }
+    
     // Interaction : Clé
     if (carte[y][x] == 'k'){
         p.cle = true;
@@ -427,6 +434,7 @@ void afficher_carte(char carte[MAX_LIGNES][MAX_COLONNES], int hauteur_reelle,Per
                 else if (c == 'p') changer_couleur(VERT_SUR_NOIR);
                 else if (c == 'k') changer_couleur(JAUNE_SUR_NOIR);
                 else if (c == 'O') changer_couleur(BLEU_SUR_NOIR);
+                else if (c == 'H') changer_couleur(JAUNE_SUR_NOIR);
                 else changer_couleur(COULEURS_PAR_DEFAUT);
 
                 ecrire_char(x, y, c);
@@ -435,7 +443,7 @@ void afficher_carte(char carte[MAX_LIGNES][MAX_COLONNES], int hauteur_reelle,Per
             else if (OnEstDejaPasseIci[y][x] == true){
                 changer_couleur(COULEURS_PAR_DEFAUT);
 
-                if(c == '#' || c == 'O' || c == '.' || c == 'T' ||  c == 'D' || c == 'O' || c == 'k'){
+                if(c == '#' || c == 'O' || c == '.' || c == 'T' ||  c == 'D' || c == 'O' || c == 'k' || c == 'H'){
                     changer_couleur(VERT_SUR_NOIR);
                     ecrire_char(x,y,c);
                 }

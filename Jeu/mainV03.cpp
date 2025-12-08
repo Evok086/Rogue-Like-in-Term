@@ -37,6 +37,8 @@ struct Carte {
 // Prototype de l'écran de défaite
 // Retourne 'r' pour rejouer, ne retourne pas en cas de quit (le programme quitte)
 char perdu();
+// Prototype de l'écran de victoire
+void victoire();
 
 // Les couleurs si besoin
 const PaireCouleur couleurs[] = {
@@ -97,6 +99,12 @@ bool test_collision(int x, int y, Personnage &p, Carte &c) {
             // Pas de clé: déplacement interdit
             return false;
         }
+    }
+
+    // Gestion de la fin de partie: case 'H' = sortie/victoire
+    if (c.carte[y][x] == 'H') {
+        victoire(); // Quitte proprement le programme
+        return true; // non atteint, mais garde une valeur de retour valide
     }
 
     // Si on arrive ici, c'est que la voie est libre(en mode splinter cell)
@@ -238,6 +246,17 @@ char perdu() {
         }
         // sinon, boucle et redemande
     }
+}
+
+// Sous-algorithme de victoire
+void victoire() {
+    effacer_console();
+    ecrire_string("Bravo ! Vous avez atteint la sortie.", 15, 10);
+    ecrire_string("Vous avez gagne !", 15, 12);
+    ecrire_string("Appuyez sur une touche pour quitter.", 15, 14);
+    saisie_bloquante();
+    fermer_console();
+    exit(0);
 }
 
 //main

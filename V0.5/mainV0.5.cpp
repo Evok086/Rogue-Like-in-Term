@@ -11,6 +11,8 @@
 #include <fstream> 
 #include <cmath>   
 #include "lib_projet_ncurses.hpp" 
+//#include <SFML/Audio.hpp> //si on veut utiliser de la musique
+#include <iostream>
 
 
 using namespace std;
@@ -28,7 +30,7 @@ const PaireCouleur couleurs[] = {
     {COLOR_BLACK, COLOR_BLUE},   // 7 : Texte noir, fond bleu
     {COLOR_GREEN, COLOR_BLACK},  // 8 : Texte vert, fond noir
     {COLOR_BLACK, COLOR_GREEN},   // 9 : Texte noir, fond vert
-}; 
+};
 
 
 // Constantes pour appeler facilement les couleur dans le code
@@ -52,15 +54,15 @@ const int NB_MONSTRES_MAX = 50; // Capacité maximale du tableau de monstres
 
 // variable gloabl
 bool OnEstDejaPasseIci[MAX_LIGNES][MAX_COLONNES]; // savoir si on a déja vu ce qu'il y a en face de nous
-
-
+// Flag global pour désactiver le brouillard de guerre (utilisé pour la carte de fin)
+bool DESACTIVER_BROUILLARD = false;
 
 
 // Structure du personnage
 struct Personnage {
     string Nom;
     int x, y; // Position sur la carte
-    int Vie, Degat, Niveau, xp, Vision, Armure;
+    int Vie, Degat, Niveau, xp, Vision, Armure; // vie, dégat, Niveau, Xp, Vision, Armure du perso
     int xpPourNiveau; // nombre d'xp qu'il faut pour gagner un niveau
     bool cle; // Inventaire(un peu nul) : possède la clé ou non
 };
@@ -71,37 +73,32 @@ struct Monstre{
     string Nom;
     char Symbole; // Caractère affiché ('T', 'D')
     int x, y; // Position du monstre
-    int Vie, Degat, xpdonne, Armure, vitesse;
+    int Vie, Degat, xpdonne, Armure, vitesse; // vie, degat, xp que nous donne le Monstre, Armure, Vitesse
     int Vision; // Distance de détection du joueur
 };
 
 
-
-
 // Déclaration des fonctions avant leur utilisation pour que le compilateur les connaisse ça evite de devoir mettre les fonctions plus haut ou plus bas
 void Combat(Personnage &p, Monstre &m, bool &jeu_lance);
-bool test_collision(int x, int y, char carte[MAX_LIGNES][MAX_COLONNES], Personnage &p, int hauteur_reelle, Monstre monstres[], int nb_monstres, bool &jeu_lance);
-void gerer_deplacement(Personnage &p, int hauteur_reelle, int input, char carte[MAX_LIGNES][MAX_COLONNES], Monstre monstres[], int nb_monstres, bool &jeu_lance);
+bool test_collision(int x, int y, char carte[MAX_LIGNES][MAX_COLONNES], Personnage &p, int &hauteur_reelle, Monstre monstres[], int &nb_monstres, bool &jeu_lance);
+void gerer_deplacement(Personnage &p, int &hauteur_reelle, int input, char carte[MAX_LIGNES][MAX_COLONNES], Monstre monstres[], int &nb_monstres, bool &jeu_lance);
 void charger_carte(string nom_fichier, char carte[MAX_LIGNES][MAX_COLONNES], int &hauteur_reelle, Monstre monstres[], int &nb_monstres_trouves);
 void deplacer_tous_les_monstres(Monstre monstres[], int nb_monstres, Personnage p, char carte[MAX_LIGNES][MAX_COLONNES]);
 
 
-
-
-
 /*
     Rôle        : Initialise toutes les statistiques du héros. (pour commencer et en cas de mort)
-    Entrée      : h (Personnage) passé par référence.
+    Entrée      : h (Personnage) .
     sortie      : aucune
     précondition: aucune aussi
 */
 
 void initialiser_heros(Personnage &h) {
     h.Nom = "Aventurier";
-    h.x = 2; 
+    h.x = 2;
     h.y = 2;
     h.Vie = 100;
-    h.Vision = 2;
+    h.Vision = 3;
     h.xp = 0;
     h.Niveau = 1;
     h.xpPourNiveau = 20;
@@ -110,41 +107,51 @@ void initialiser_heros(Personnage &h) {
     h.Degat = 5;
 }
 
-// Vérifie si le joueur a assez d'XP pour monter de niveau
+/*Rôle : Vérifie si le joueur a assez d'XP pour monter de niveau et si oui on gagne un niveau
+  Entrée : p (personnage)
+  sortie : aucune
+  précondition : aucune
+*/
+
 void GagnerNiveau(Personnage &p){
     if (p.xp >= p.xpPourNiveau){
-        p.xp = p.xp - p.xpPourNiveau; 
-        p.xpPourNiveau = p.xpPourNiveau * 1.5; 
+        p.xp = p.xp - p.xpPourNiveau;
+        p.xpPourNiveau = p.xpPourNiveau * 1.5;
         p.Niveau = p.Niveau + 1;
         p.Degat = p.Degat + 2; // Bonus de dégâts
         p.Vie = p.Vie + 5;   //plus de vie
     }
 }
 
-// Affiche les informations du joueur en bas 
+/*Role : Affiche sur le hud la vie, le niveau, l'xp, si on a une clé, et nos dégat, et la vision.
+  entré : heros (personnage), hauteur_reelle(la taille de la carte pour pouvoir écrire sur la carte)
+  sortie : aucune
+  précondition : aucune
+*/
+
 void afficher_hero(Personnage heros, int hauteur_reelle){
     // Affichage de la Vie
     changer_couleur(ROUGE_SUR_NOIR);
     ecrire_string ("Vie du perso :", 0, hauteur_reelle+5);
     ecrire_string (std::to_string(heros.Vie) + "  ", 15, hauteur_reelle+5);
-    
+
     // Affichage du Niveau
     changer_couleur (BLEU_SUR_NOIR);
     ecrire_string ("niveau : ", 0, hauteur_reelle+6);
     ecrire_string (std::to_string(heros.Niveau), 15, hauteur_reelle+6);
-    
+
     // Affichage de l'XP
     changer_couleur (VERT_SUR_NOIR);
     ecrire_string ("Xp : ", 0, hauteur_reelle+7);
     ecrire_string (std::to_string(heros.xp) + "/" + std::to_string(heros.xpPourNiveau), 15, hauteur_reelle+7);
-    
+
     // Affichage de l'inventaire (Clé)
     changer_couleur (NOIR_SUR_ROUGE);
     if (heros.cle == true){
         ecrire_string ("tu as une clé", 0, hauteur_reelle+8);
     } else {
         changer_couleur (COULEURS_PAR_DEFAUT);
-        ecrire_string ("             ", 0, hauteur_reelle+8); 
+        ecrire_string ("             ", 0, hauteur_reelle+8);
 
     }
     changer_couleur (VERT_SUR_NOIR);
@@ -156,21 +163,32 @@ void afficher_hero(Personnage heros, int hauteur_reelle){
     ecrire_string (std::to_string(heros.Vision), 15, hauteur_reelle+10);
 }
 
+/*Role : le personnage perd la vie, et le monstre aussi quand on se percute.
+  entré : p(personnage), m(Monstre), jeu_lancé(pour savoir si le jeu est en cours et pouvoir l'arreté)
+  sortie : jeu lancé(pour couper le jeu)
+  précondition : etre en combat.
+*/
 
 void Combat(Personnage &p, Monstre &m, bool &jeu_lance){
     p.Vie = p.Vie - m.Degat; // Le joueur prend des dégâts
     m.Vie = m.Vie - p.Degat; // Le monstre prend des dégâts
 
     // Vérification de la mort du joueur
-    if (p.Vie <= 0){    
+    if (p.Vie <= 0){
         jeu_lance = false; // Arrête la boucle de jeu
-        p.Vie = 0; 
-    }
+        p.Vie = 0;
+    }             // Autorise le déplacement sur la case
 }
 
-// Déplcaement des monstres.
+
+/*Role : Déplcament des monstres.
+  Entré : Monstre(tab, pour savoir qu'elles monstre on bouge), nb_monstres, p(personnage), carte.
+  sortie : aucune
+  précondition : le monstre nous voit
+*/
+
 void deplacer_tous_les_monstres(Monstre monstres[], int nb_monstres, Personnage p, char carte[MAX_LIGNES][MAX_COLONNES]) {
-    
+
     // On parcourt tout le tableau de monstres
     for (int i = 0; i < nb_monstres; i++) {
         // Si le monstre est mort ou est un Tank (immobile), on passe au suivant
@@ -183,10 +201,10 @@ void deplacer_tous_les_monstres(Monstre monstres[], int nb_monstres, Personnage 
 
         // Si le joueur est hors de la zone de vision, le monstre ne bouge pas
         if (abs(diffX) > monstres[i].Vision || abs(diffY) > monstres[i].Vision) { //j'avoue j'ai demandé a chat gpt j'en pouvais plus de ne pas trouver ... sorry
-            continue; 
+            continue;
         }
 
-        // La direction ou il doit aller 
+        // La direction ou il doit aller
         int directionX = 0;
         if (diffX > 0) directionX = 1; else if (diffX < 0) directionX = -1;
 
@@ -205,7 +223,7 @@ void deplacer_tous_les_monstres(Monstre monstres[], int nb_monstres, Personnage 
         bool joueurEnX = (futurX == p.x && monstres[i].y == p.y);
         bool joueurEnY = (monstres[i].x == p.x && futurY == p.y);
 
-        
+
         // Si Le joueur est plus loin horizontalement (Priorité X)
         if (abs(diffX) > abs(diffY)) {
             // Essai déplacement X
@@ -216,7 +234,7 @@ void deplacer_tous_les_monstres(Monstre monstres[], int nb_monstres, Personnage 
             else if (directionY != 0 && !murEnY && !joueurEnY) {
                 monstres[i].y = futurY;
             }
-        } 
+        }
         // Si Le joueur est plus loin verticalement (Priorité Y)
         else {
             // Essai déplacement Y
@@ -231,10 +249,14 @@ void deplacer_tous_les_monstres(Monstre monstres[], int nb_monstres, Personnage 
     }
 }
 
-// Fonction de déplacement 
-// Vérifie si le joueur PEUT aller sur la case (x,y) et gère les interactions
-bool test_collision(int x, int y, char carte[MAX_LIGNES][MAX_COLONNES], Personnage &p, int hauteur_reelle, Monstre monstres[], int nb_monstres, bool &jeu_lance) {
-    
+/*Role : Regarde l'endroit ou on se déplacent pour voir si on peut
+  Entré : x,y,carte,p(personnage),hauteur_reelle,monstre,nb_monstre,jeu_lancé
+  sortie : p,jeu_lancé
+  précondition : etre en déplacement
+*/
+
+bool test_collision(int x, int y, char carte[MAX_LIGNES][MAX_COLONNES], Personnage &p, int &hauteur_reelle, Monstre monstres[], int &nb_monstres, bool &jeu_lance) {
+
     // Vérifie qu'on ne sort pas du tableau
     if (x < 0 || x >= MAX_COLONNES || y < 0 || y >= MAX_LIGNES) {
         return false; // C'est interdit
@@ -244,22 +266,15 @@ bool test_collision(int x, int y, char carte[MAX_LIGNES][MAX_COLONNES], Personna
     if (carte[y][x] == '#') {
         return false; // C'est un mur, interdit(logique ma gueule !)
     }
-    
+
     // Interaction : Potion
-    if (carte[y][x] == 'p'){ 
+    if (carte[y][x] == 'p'){
         p.Vie = p.Vie + 5;
         carte[y][x] = '.'; // On retire l'objet
         afficher_hero(p, hauteur_reelle);
         return true;
     }
-    
-    // Interaction : Sortie de niveau / Fin de partie
-    // Si le joueur marche sur 'H', on termine immédiatement la partie
-    if (carte[y][x] == 'H'){
-        jeu_lance = false; // Retour au menu principal
-        return true;       // Autorise le déplacement final sur la case
-    }
-    
+
     // Interaction : Clé
     if (carte[y][x] == 'k'){
         p.cle = true;
@@ -267,7 +282,7 @@ bool test_collision(int x, int y, char carte[MAX_LIGNES][MAX_COLONNES], Personna
         afficher_hero(p, hauteur_reelle);
         return true;
     }
-    
+
     // Interaction : Porte
     if (carte[y][x] == 'O'){
         if (p.cle == true){
@@ -279,14 +294,28 @@ bool test_collision(int x, int y, char carte[MAX_LIGNES][MAX_COLONNES], Personna
         // Pas de clé = Mur
         return false;
     }
-    
+
+
+    // Interaction : Fin/HUB/Carte spéciale
+    if (carte[y][x] == 'H'){
+        // On peut effacer la case pour éviter une re-détection si nécessaire
+        // mais comme on recharge une nouvelle carte immédiatement, ce n'est pas indispensable.
+        string fin_file = "CarteEasterEgg.txt"; // Fichier de carte de fin situé dans le même dossier que l'exécutable
+        // Recharger la carte et ré-initialiser la liste des monstres
+        charger_carte(fin_file, carte, hauteur_reelle, monstres, nb_monstres);
+        // Désactiver le brouillard de guerre pour la carte de fin
+        DESACTIVER_BROUILLARD = true;
+        // On autorise le déplacement sur la case (le joueur sera repositionné par le mouvement après retour)
+        return true;
+    }
+
     for(int i=0; i < nb_monstres; i++) {
         // Si la case cible contient un monstre VIVANT
         if (x == monstres[i].x && y == monstres[i].y && monstres[i].Vie > 0) {
-            
+
             // On lance le combat
             Combat(p, monstres[i], jeu_lance);
-            
+
             // Affichage vie du monstre attaqué
             changer_couleur(ROUGE_SUR_NOIR);
             string msg = monstres[i].Nom + ": " + to_string(monstres[i].Vie) + "PV   ";
@@ -296,7 +325,7 @@ bool test_collision(int x, int y, char carte[MAX_LIGNES][MAX_COLONNES], Personna
             if (monstres[i].Vie <= 0) {
                 p.xp = p.xp + monstres[i].xpdonne;
                 GagnerNiveau(p);
-                
+
                 changer_couleur(VERT_SUR_NOIR);
                 ecrire_string(monstres[i].Nom + " vaincu !     ", 20, hauteur_reelle + 9);
             }
@@ -308,18 +337,22 @@ bool test_collision(int x, int y, char carte[MAX_LIGNES][MAX_COLONNES], Personna
     return true;
 }
 
+/*Role : Fonction qui calcule le mouvement du joueur selon la touche appuyée
+  Entré : p,hauteur_reelle,input,carte,monstre,nb_monstre,jeu_lancé
+  sortie : p
+  précondition : appuyer sur une touche
+*/
 
-// Fonction qui calcule le mouvement du joueur selon la touche appuyée
-void gerer_deplacement(Personnage &p, int hauteur_reelle, int input, char carte[MAX_LIGNES][MAX_COLONNES], Monstre monstres[], int nb_monstres, bool &jeu_lance) {    
+void gerer_deplacement(Personnage &p, int &hauteur_reelle, int input, char carte[MAX_LIGNES][MAX_COLONNES], Monstre monstres[], int &nb_monstres, bool &jeu_lance) {
 
-    int futurX = p.x; 
-    int futurY = p.y; 
+    int futurX = p.x;
+    int futurY = p.y;
 
     // Détermine la case visée
-    if (input == 'z') futurY--; // Haut
-    else if (input == 's') futurY++; // Bas
-    else if (input == 'q') futurX--; // Gauche
-    else if (input == 'd') futurX++; // Droite
+    if (input == 'z' || input == KEY_UP) futurY--; // Haut
+    else if (input == 's' || input == KEY_DOWN) futurY++; // Bas
+    else if (input == 'q' || input == KEY_LEFT) futurX--; // Gauche
+    else if (input == 'd' || input == KEY_RIGHT) futurX++; // Droite
     else return; // Autre touche ignorée
 
     // Vérifie la validité du mouvement via test_collision
@@ -330,6 +363,11 @@ void gerer_deplacement(Personnage &p, int hauteur_reelle, int input, char carte[
     }
 }
 
+/*Role : met a jour l'endroit ou on voit autour de nous
+  Entré : heros(personnage), hauteur_carte
+  sortie : aucune
+  précondition : aucune
+*/
 
 void BrouillardDeGuerre(Personnage heros,int hauteur_carte){
     int rayon = heros.Vision;
@@ -345,33 +383,36 @@ void BrouillardDeGuerre(Personnage heros,int hauteur_carte){
 }
 
 
+/*Role : Charge la carte depuis le fichier texte et initialise les monstres
+  Entré : nom_fichier,carte,hauteur_reelle,monstre,nb_monstre_trouvé
+  sortie : hauteur_reelle,nb_monstre_trouves
+  précondition : aucune
+*/
 
 
-
-// Charge la carte depuis le fichier texte et initialise les monstres
-void charger_carte(string nom_fichier, char carte[MAX_LIGNES][MAX_COLONNES], int &hauteur_reelle, Monstre monstres[], int &nb_monstres_trouves) { 
+void charger_carte(string nom_fichier, char carte[MAX_LIGNES][MAX_COLONNES], int &hauteur_reelle, Monstre monstres[], int &nb_monstres_trouves) {
     ifstream file(nom_fichier); // Ouverture du fichier
-    string ligne; 
-    
+    string ligne;
+
     // Nettoyage du tableau carte
-    for(int i=0; i<MAX_LIGNES; i=i+1) {  
-        for(int j=0; j<MAX_COLONNES; j=j+1) { 
-            carte[i][j] = ' '; 
+    for(int i=0; i<MAX_LIGNES; i=i+1) {
+        for(int j=0; j<MAX_COLONNES; j=j+1) {
+            carte[i][j] = ' ';
             OnEstDejaPasseIci[i][j] = false;
         }
     }
-    
-    hauteur_reelle = 0; 
+
+    hauteur_reelle = 0;
     nb_monstres_trouves = 0; // Réinitialisation du compteur de monstres
 
-    if (file.is_open()) { 
-        while (getline(file, ligne) && hauteur_reelle < MAX_LIGNES) { 
-            for (int x = 0; x < ligne.length() && x < MAX_COLONNES; x++) { 
+    if (file.is_open()) {
+        while (getline(file, ligne) && hauteur_reelle < MAX_LIGNES) {
+            for (int x = 0; x < ligne.length() && x < MAX_COLONNES; x++) {
                 char c = ligne[x];
-                
+
                 // On créer des monstres quand on les detextes sur la carte
-                
-                // TANK 
+
+                // TANK
                 if(c == 'T'){
                     if (nb_monstres_trouves < NB_MONSTRES_MAX) {
                         monstres[nb_monstres_trouves].Nom = "Tank";
@@ -400,12 +441,12 @@ void charger_carte(string nom_fichier, char carte[MAX_LIGNES][MAX_COLONNES], int
                         monstres[nb_monstres_trouves].Vision = 5; // Vision moyenne (5 cases)
 
                         nb_monstres_trouves = nb_monstres_trouves +1;
-                        carte[hauteur_reelle][x] = '.'; 
+                        carte[hauteur_reelle][x] = '.';
                     }
                 }
                 //Autre (Mur, Sol, Item)
                 else {
-                     carte[hauteur_reelle][x] = ligne[x]; 
+                     carte[hauteur_reelle][x] = ligne[x];
                 }
             }
             hauteur_reelle = hauteur_reelle+1;
@@ -417,18 +458,39 @@ void charger_carte(string nom_fichier, char carte[MAX_LIGNES][MAX_COLONNES], int
 }
 
 
+/*Role : Affiche la carte et change la couleur des murs, et des choses comme ça par rapport au brouillard de guerre.
+  Entré : carte,hauteur_reelle,heros
+  sortie : aucune
+  précondition : aucune
+*/
+
 // Affiche La carte
 void afficher_carte(char carte[MAX_LIGNES][MAX_COLONNES], int hauteur_reelle,Personnage heros) {
-    BrouillardDeGuerre(heros, hauteur_reelle);
+    if (!DESACTIVER_BROUILLARD) {
+        BrouillardDeGuerre(heros, hauteur_reelle);
+    }
     for (int y = 0; y < hauteur_reelle; y=y+1) {
         for (int x = 0; x < MAX_COLONNES; x=x+1) {
-            
+
+            char c = carte[y][x];
+
+            // Mode sans brouillard: tout est visible
+            if (DESACTIVER_BROUILLARD) {
+                if (c =='#') changer_couleur(COULEURS_PAR_DEFAUT);
+                else if (c == 'p') changer_couleur(VERT_SUR_NOIR);
+                else if (c == 'k') changer_couleur(JAUNE_SUR_NOIR);
+                else if (c == 'O') changer_couleur(BLEU_SUR_NOIR);
+                else if (c == 'H') changer_couleur(JAUNE_SUR_NOIR);
+                else changer_couleur(COULEURS_PAR_DEFAUT);
+                ecrire_char(x, y, c);
+                continue;
+            }
+
             bool visible_maintenant = false;
             if (abs(heros.x - x)+abs(heros.y - y)<= heros.Vision +1){
                 visible_maintenant = true;
             }
-            
-            char c = carte[y][x];
+
             if (visible_maintenant){
                 if (c =='#') changer_couleur(COULEURS_PAR_DEFAUT);
                 else if (c == 'p') changer_couleur(VERT_SUR_NOIR);
@@ -443,7 +505,7 @@ void afficher_carte(char carte[MAX_LIGNES][MAX_COLONNES], int hauteur_reelle,Per
             else if (OnEstDejaPasseIci[y][x] == true){
                 changer_couleur(COULEURS_PAR_DEFAUT);
 
-                if(c == '#' || c == 'O' || c == '.' || c == 'T' ||  c == 'D' || c == 'O' || c == 'k' || c == 'H'){
+                if(c == '#' || c == 'O' || c == '.' || c == 'T' ||  c == 'D' || c == 'O' || c == 'k' || c == 'p' || c == 'H'){
                     changer_couleur(VERT_SUR_NOIR);
                     ecrire_char(x,y,c);
                 }
@@ -459,8 +521,12 @@ void afficher_carte(char carte[MAX_LIGNES][MAX_COLONNES], int hauteur_reelle,Per
     }
 }
 
+/*Role : Affiche le menu principal
+  Entrée : aucune
+  Sortie : aucune
+  Précondition : etre dans le menu
+*/
 
-// Affiche le menu principal
 void afficher_instructions() {
     ecrire_string ("ROGUE LIKE V0.5, Gomez, Jan, Beauvivre, Celestin", 20, 10);
     ecrire_string("[p] pour Jouer", 20, 12);
@@ -475,6 +541,13 @@ int main() {
         cout << "Erreur console" << endl;
         return 1;
     }
+
+    //sf::Music music;
+    //if (!music.openFromFile("MusiqueZelda.wav")) {
+    //    return -1;
+    //}
+    //music.play();
+
 
     // Variables d'état du Jeu 
     string nom_fichier = "maptest.txt";
@@ -516,6 +589,8 @@ int main() {
                 initialiser_heros(heros);
                 carte_chargee = false; 
                 jeu_lance = true; 
+                // Réactiver le brouillard de guerre pour une nouvelle partie
+                DESACTIVER_BROUILLARD = false;
                 
                 // Chargement de la carte et des monstre
                 if (!carte_chargee) { 
@@ -552,7 +627,7 @@ int main() {
             gerer_deplacement(heros, hauteur_carte ,input, carte, Les_monstre, Nb_monstre_trouve, jeu_lance);
             
             // Tour des Monstres (IA)
-            if (input == 'z' || input == 'q' || input == 's' || input == 'd') {
+            if (input == 'z' || input == 'q' || input == 's' || input == 'd' || input == KEY_UP || input == KEY_DOWN || input == KEY_LEFT || input == KEY_RIGHT) {
                 deplacer_tous_les_monstres(Les_monstre, Nb_monstre_trouve, heros, carte);
             }
         }

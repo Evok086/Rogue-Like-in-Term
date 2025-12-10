@@ -1,0 +1,13 @@
+############################################################
+#                                                          #
+#                       FELICITATIONS !                    #
+#                                                          #
+#                       TU AS TERMINE                      #
+#                         LE DONJON                        #
+#                                                          #
+#                     Merci d'avoir joue                   #
+#                                                          #
+#                      [p] pour rejouer                    #
+#                   [a] pour quitter le jeu                #
+#                                                          #
+############################################################
